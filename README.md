@@ -1,1 +1,2 @@
-# nvim-config-files
+# My Personal Neovim Config Files
+
