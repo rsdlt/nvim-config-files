@@ -9,23 +9,26 @@ vim.api.nvim_command('packadd packer.nvim')
 
 local no_errors, error_msg = pcall(function()
 
-  local time
-  local profile_info
-  local should_profile = false
-  if should_profile then
-    local hrtime = vim.loop.hrtime
-    profile_info = {}
-    time = function(chunk, start)
-      if start then
-        profile_info[chunk] = hrtime()
-      else
-        profile_info[chunk] = (hrtime() - profile_info[chunk]) / 1e6
-      end
+_G._packer = _G._packer or {}
+_G._packer.inside_compile = true
+
+local time
+local profile_info
+local should_profile = false
+if should_profile then
+  local hrtime = vim.loop.hrtime
+  profile_info = {}
+  time = function(chunk, start)
+    if start then
+      profile_info[chunk] = hrtime()
+    else
+      profile_info[chunk] = (hrtime() - profile_info[chunk]) / 1e6
     end
-  else
-    time = function(chunk, start) end
   end
-  
+else
+  time = function(chunk, start) end
+end
+
 local function save_profiles(threshold)
   local sorted_times = {}
   for chunk_name, time_taken in pairs(profile_info) do
@@ -38,8 +41,10 @@ local function save_profiles(threshold)
       results[i] = elem[1] .. ' took ' .. elem[2] .. 'ms'
     end
   end
+  if threshold then
+    table.insert(results, '(Only showing plugins that took longer than ' .. threshold .. ' ms ' .. 'to load)')
+  end
 
-  _G._packer = _G._packer or {}
   _G._packer.profile_output = results
 end
 
@@ -95,11 +100,6 @@ _G.packer_plugins = {
     path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/better-escape.nvim",
     url = "https://github.com/max397574/better-escape.nvim"
   },
-  catppuccin = {
-    loaded = true,
-    path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/catppuccin",
-    url = "https://github.com/catppuccin/nvim"
-  },
   ["cmp-buffer"] = {
     loaded = true,
     path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/cmp-buffer",
@@ -135,6 +135,11 @@ _G.packer_plugins = {
     path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
   },
+  ["diffview.nvim"] = {
+    loaded = true,
+    path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/diffview.nvim",
+    url = "https://github.com/sindrets/diffview.nvim"
+  },
   fd = {
     loaded = true,
     path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/fd",
@@ -144,11 +149,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/fidget.nvim",
     url = "https://github.com/j-hui/fidget.nvim"
-  },
-  ["gruvbox-baby"] = {
-    loaded = true,
-    path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/gruvbox-baby",
-    url = "https://github.com/luisiacc/gruvbox-baby"
   },
   ["headlines.nvim"] = {
     loaded = true,
@@ -200,11 +200,6 @@ _G.packer_plugins = {
     path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/mason.nvim",
     url = "https://github.com/williamboman/mason.nvim"
   },
-  ["minimal.nvim"] = {
-    loaded = true,
-    path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/minimal.nvim",
-    url = "https://github.com/Yazeed1s/minimal.nvim"
-  },
   ["monokai.nvim"] = {
     loaded = true,
     path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/monokai.nvim",
@@ -236,6 +231,11 @@ _G.packer_plugins = {
     path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
   },
+  ["nvim-transparent"] = {
+    loaded = true,
+    path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/nvim-transparent",
+    url = "https://github.com/xiyaowong/nvim-transparent"
+  },
   ["nvim-tree.lua"] = {
     loaded = true,
     path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/nvim-tree.lua",
@@ -255,11 +255,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
     url = "https://github.com/kyazdani42/nvim-web-devicons"
-  },
-  ["onedark.nvim"] = {
-    loaded = true,
-    path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/onedark.nvim",
-    url = "https://github.com/navarasu/onedark.nvim"
   },
   ["packer.nvim"] = {
     loaded = true,
@@ -291,15 +286,10 @@ _G.packer_plugins = {
     path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/rust-tools.nvim",
     url = "https://github.com/simrat39/rust-tools.nvim"
   },
-  ["specs.nvim"] = {
+  ["symbols-outline.nvim"] = {
     loaded = true,
-    path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/specs.nvim",
-    url = "https://github.com/edluffy/specs.nvim"
-  },
-  tagbar = {
-    loaded = true,
-    path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/tagbar",
-    url = "https://github.com/preservim/tagbar"
+    path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/symbols-outline.nvim",
+    url = "https://github.com/simrat39/symbols-outline.nvim"
   },
   ["telescope-fzf-native.nvim"] = {
     loaded = true,
@@ -321,20 +311,10 @@ _G.packer_plugins = {
     path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/todo-comments.nvim",
     url = "https://github.com/folke/todo-comments.nvim"
   },
-  ["tokyonight.nvim"] = {
-    loaded = true,
-    path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/tokyonight.nvim",
-    url = "https://github.com/folke/tokyonight.nvim"
-  },
   ["trouble.nvim"] = {
     loaded = true,
     path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/trouble.nvim",
     url = "https://github.com/folke/trouble.nvim"
-  },
-  ["twilight.nvim"] = {
-    loaded = true,
-    path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/twilight.nvim",
-    url = "https://github.com/folke/twilight.nvim"
   },
   ["vim-illuminate"] = {
     loaded = true,
@@ -355,16 +335,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/vimspector",
     url = "https://github.com/puremourning/vimspector"
-  },
-  ["zen-mode.nvim"] = {
-    loaded = true,
-    path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/zen-mode.nvim",
-    url = "https://github.com/folke/zen-mode.nvim"
-  },
-  ["zephyr-nvim"] = {
-    loaded = true,
-    path = "/home/rsdlt/.local/share/nvim/site/pack/packer/start/zephyr-nvim",
-    url = "https://github.com/glepnir/zephyr-nvim"
   }
 }
 
@@ -377,6 +347,13 @@ time([[Config for nvim-autopairs]], false)
 time([[Config for alpha-nvim]], true)
 try_loadstring("\27LJ\2\na\0\0\5\0\5\0\n6\0\0\0'\2\1\0B\0\2\0029\0\2\0006\2\0\0'\4\3\0B\2\2\0029\2\4\2B\0\2\1K\0\1\0\vconfig\27alpha.themes.dashboard\nsetup\nalpha\frequire\0", "config", "alpha-nvim")
 time([[Config for alpha-nvim]], false)
+
+_G._packer.inside_compile = false
+if _G._packer.needs_bufread == true then
+  vim.cmd("doautocmd BufRead")
+end
+_G._packer.needs_bufread = false
+
 if should_profile then save_profiles() end
 
 end)

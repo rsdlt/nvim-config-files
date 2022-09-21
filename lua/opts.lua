@@ -1,11 +1,10 @@
 --[[ opts.lua ]]
-local opt = vim.opt             -- with vim.opt we can set global, window and buffer settings, acting like :set in vimscript
+local opt = vim.opt -- with vim.opt we can set global, window and buffer settings, acting like :set in vimscript
 local set = vim.opt
 local o = vim.o
 local cmd = vim.api.nvim_command
 
-vim.opt.foldcolumn = '6'
--- ident 
+-- ident
 vim.cmd([[
 set tabstop=4
 set shiftwidth=4
@@ -18,49 +17,46 @@ vim.cmd([[
 set spelllang=en_us
 ]])
 
-
 -- turn off macro reording
 vim.cmd([[
 map q <Nop>
 ]])
 
--- opt.colorcolumn = '80'           -- str:  Show col for max line length
-opt.number = true                -- bool: Show line numbers
-opt.relativenumber = true        -- bool: Show relative line numbers
-opt.scrolloff = 4                -- int:  Min num lines of context
-opt.signcolumn = "yes"           -- str:  Show the sign column
-opt.numberwidth = 4              -- gutter width 
-
-set.cursorline = true               -- display cursor line
-set.cursorlineopt = 'number'        --
+opt.number = true -- bool: Show line numbers
+opt.relativenumber = true -- bool: Show relative line numbers
+opt.scrolloff = 4 -- int:  Min num lines of context
+opt.signcolumn = "yes" -- str:  Show the sign column
+opt.numberwidth = 4 -- gutter width
+set.cursorline = true -- display cursor line
+set.cursorlineopt = 'number' --
 -- set.laststatus = 3                  -- show just one status line
 
 
 -- [[ Filetypes ]]
-opt.encoding = 'utf8'            -- str:  String encoding to use
-opt.fileencoding = 'utf8'        -- str:  File encoding to use
+opt.encoding = 'utf8' -- str:  String encoding to use
+opt.fileencoding = 'utf8' -- str:  File encoding to use
 
 -- [[ Theme ]]
-opt.syntax = "ON"                -- str:  Allow syntax highlighting
-opt.termguicolors = true        -- bool: If term supports ui color then enable
+opt.syntax = "ON" -- str:  Allow syntax highlighting
+opt.termguicolors = true -- bool: If term supports ui color then enable
 
 -- [[ Search ]]
-opt.ignorecase = true            -- bool: Ignore case in search patterns
-opt.smartcase = true             -- bool: Override ignorecase if search contains capitals
-opt.incsearch = true             -- bool: Use incremental search
-opt.hlsearch = false             -- bool: Highlight search matches
+opt.ignorecase = true -- bool: Ignore case in search patterns
+opt.smartcase = true -- bool: Override ignorecase if search contains capitals
+opt.incsearch = true -- bool: Use incremental search
+opt.hlsearch = false -- bool: Highlight search matches
 
 -- [[ Whitespace ]]
-opt.expandtab = true             -- bool: Use spaces instead of tabs
-opt.shiftwidth = 4               -- num:  Size of an indent
-opt.softtabstop = 4              -- num:  Number of spaces tabs count for in insert mode
-opt.tabstop = 4                  -- num:  Number of spaces tabs count for
+opt.expandtab = true -- bool: Use spaces instead of tabs
+opt.shiftwidth = 4 -- num:  Size of an indent
+opt.softtabstop = 4 -- num:  Number of spaces tabs count for in insert mode
+opt.tabstop = 4 -- num:  Number of spaces tabs count for
 
 -- [[ Splits ]]
-opt.splitright = true            -- bool: Place new window to right of current one
-opt.splitbelow = true            -- bool: Place new window below the current one
+opt.splitright = true -- bool: Place new window to right of current one
+opt.splitbelow = true -- bool: Place new window below the current one
 
--- Treesitter folding 
+-- Treesitter folding
 -- Prevent all fold when opening
 -- opt.foldmethod = 'expr'
 -- opt.foldexpr = 'nvim_treesitter#foldexpr()'
@@ -75,13 +71,8 @@ opt.splitbelow = true            -- bool: Place new window below the current one
 -- vim.wo.foldnestmax = 3
 -- vim.wo.foldminlines = 1
 
-
-
-
-
-
 -- Format on Save
--- vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.formatting_sync()]]
+vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.formatting_sync()]]
 
 
 -- Vimspector
@@ -92,21 +83,18 @@ let g:vimspector_terminal_maxwidth = 70
 ]])
 
 
-
--- LSP Diagnostics Options Setup 
-
+-- LSP Diagnostics Options Setup
 local sign = function(opts)
-  vim.fn.sign_define(opts.name, {
-    texthl = opts.name,
-    text = opts.text,
-    numhl = ''
-  })
+    vim.fn.sign_define(opts.name, {
+        texthl = opts.name,
+        text = opts.text,
+        numhl = ''
+    })
 end
-
-sign({name = 'DiagnosticSignError', text = ''})
-sign({name = 'DiagnosticSignWarn', text = ''})
-sign({name = 'DiagnosticSignHint', text = ''})
-sign({name = 'DiagnosticSignInfo', text = ''})
+sign({ name = 'DiagnosticSignError', text = '' })
+sign({ name = 'DiagnosticSignWarn', text = '' })
+sign({ name = 'DiagnosticSignHint', text = '' })
+sign({ name = 'DiagnosticSignInfo', text = '' })
 
 vim.diagnostic.config({
     virtual_text = false,
@@ -123,73 +111,10 @@ vim.diagnostic.config({
 })
 -- Fixed column for diagnostics to appear
 -- Show autodiagnostic popup on cursor hover_range
--- Goto previous / next diagnostic warning / error 
--- Show inlay_hints more frequently 
+-- Goto previous / next diagnostic warning / error
+-- Show inlay_hints more frequently
 vim.o.updatetime = 350
 set.signcolumn = 'yes'
 vim.cmd([[
 autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
 ]])
-
-
--- Tagbar setup 
-
-vim.cmd([[
-let g:tagbar_position = 'leftabove vertical'
-let g:tagbar_width = max([30, winwidth(0) / 4])
-let g:tagbar_sort = 1
-let g:tagbar_case_insensitive = 1
-let g:tagbar_compact = 1
-let g:tagbar_indent = 1
-let g:tagbar_show_balloon = 0 
-let g:tagbar_show_data_type = 1
-let g:tagbar_show_visibility = 1
-let g:tagbar_show_tag_count = 1
-let g:tagbar_show_tag_linenumbers = 1
-let g:tagbar_wrap = 2
-let g:tagbar_foldlevel = 99
-let g:tagbar_autoshowtag = 1
-]])
-
-
--- Tagbar setup with Universal Tags
-vim.cmd([[
-let g:rust_use_custom_ctags_defs = 1  " if using rust.vim
-let g:tagbar_type_rust = {
-  \ 'ctagsbin' : '/usr/local/ctags',
-  \ 'ctagstype' : 'rust',
-  \ 'kinds' : [
-      \ 'n:modules',
-      \ 's:structures:1',
-      \ 'i:interfaces',
-      \ 'c:implementations',
-      \ 'f:functions:1',
-      \ 'g:enumerations:1',
-      \ 't:type aliases:1:0',
-      \ 'v:constants:1:0',
-      \ 'M:macros:1',
-      \ 'm:fields:1:0',
-      \ 'e:enum variants:1:0',
-      \ 'P:methods:1',
-  \ ],
-  \ 'sro': '::',
-  \ 'kind2scope' : {
-      \ 'n': 'module',
-      \ 's': 'struct',
-      \ 'i': 'interface',
-      \ 'c': 'implementation',
-      \ 'f': 'function',
-      \ 'g': 'enum',
-      \ 't': 'typedef',
-      \ 'v': 'variable',
-      \ 'M': 'macro',
-      \ 'm': 'field',
-      \ 'e': 'enumerator',
-      \ 'P': 'method',
-  \ },
-\ }
-
-]])
-
-
-
