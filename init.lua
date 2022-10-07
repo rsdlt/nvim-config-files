@@ -4,14 +4,13 @@
 require('impatient')
 
 -- LEADER
--- These keybindings need to be defined before the first / is called; otherwise, it will default to "\"
 vim.g.mapleader = " " -- works across all nvim files
-vim.g.localleader = "\\" -- for specific file type
-
 
 -- Color theme
-vim.cmd [[colorscheme kanagawa]]
-
+require('kanagawa').setup({
+    keywordStyle = { italic = false, bold = true },
+})
+vim.cmd("colorscheme kanagawa")
 
 -- Highlight colors
 vim.cmd([[
@@ -284,7 +283,10 @@ require('Comment').setup({
     },
 })
 
+-- Crates Nvim
+require('crates').setup({
 
+})
 
 ----------------------------------------
 -- LSP Server Configurations        ----
@@ -296,34 +298,18 @@ local nvim_lsp = require 'lspconfig'
 
 -- RUST
 -- -------------------------------------
+local rt = require("rust-tools")
 
---local codelldb_path = '/home/rsdlt/.vscode/extensions/vadimcn.vscode-lldb-1.7.3/adapter/codelldb'
---local liblldb_path = '/home/rsdlt/.vscode/extensions/vadimcn.vscode-lldb-1.7.3/lldb/lib/liblldb.so'
-local rt = {
+rt.setup({
     server = {
-        settings = {
-            on_attach = function(_, bufnr)
-                -- Hover actions
-                -- vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-                -- Code action groups
-                vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-
-                require 'illuminate'.on_attach(client)
-
-            end,
-            ["rust-analyzer"] = {
-                checkOnSave = {
-                    command = "clippy"
-                },
-            },
-        }
+        on_attach = function(_, bufnr)
+            -- Hover actions
+            vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+            -- Code action groups
+            vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+        end,
     },
-    dap = { -- Configure DAP Debugger in case I need it in the future
-        adapter = require('rust-tools.dap').get_codelldb_adapter(
-            codelldb_path, liblldb_path)
-    }
-}
-require('rust-tools').setup(rt)
+})
 
 
 
@@ -427,6 +413,7 @@ cmp.setup({
     sources = {
         { name = 'path' }, -- file paths
         { name = 'nvim_lsp', keyword_length = 1, priority = 10 }, -- from language server
+        { name = 'crates', keyword_length = 1, priority = 10 },
         { name = 'luasnip', keyword_length = 1, priority = 7 }, -- for lua users
         { name = 'nvim_lsp_signature_help', priority = 8 }, -- display function signatures with current parameter emphasized
         { name = 'nvim_lua', keyword_length = 1, priority = 8 }, -- complete neovim's Lua runtime API such vim.lsp.*

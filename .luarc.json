@@ -1,0 +1,12 @@
+{
+    "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+    "Lua.diagnostics.globals": [
+        "lfs"
+    ],
+    "Lua.workspace.checkThirdParty": false,
+    "Lua.workspace.library": [
+        "/home/rsdlt/.luarocks/share/lua/5.4",
+        "/usr/share/lua/5.4",
+        "${3rd}/lfs/library"
+    ]
+}
