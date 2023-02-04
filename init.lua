@@ -133,14 +133,6 @@ require "fidget".setup {
 }
 
 
--- Vale prose lint
-require("null-ls").setup({
-    sources = {
-        require("null-ls").builtins.diagnostics.vale,
-    },
-})
-
-
 -- Hop
 require 'hop'.setup {
     keys = 'etovxqpdygfblzhckisuran',
